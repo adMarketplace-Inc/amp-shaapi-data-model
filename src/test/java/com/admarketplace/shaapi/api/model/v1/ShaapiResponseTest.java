@@ -4,6 +4,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -14,10 +15,10 @@ class ShaapiResponseTest {
   void testSerializeFailure() throws JsonProcessingException {
     //GIVEN
     String source = getSnaapiResponseAsJson();
-    ShaapiResponse expectedFailure = getShaapiResponseAsObject();
+    ShaapiResponse<List<Failure>> expectedFailure = getShaapiResponseAsObject();
 
     //WHEN
-    ShaapiResponse shaapiResponse = new ObjectMapper().readValue(source, ShaapiResponse.class);
+    ShaapiResponse<List<Failure>> shaapiResponse = new ObjectMapper().readValue(source, new TypeReference<>() {});
 
     //THEN
     assertEquals(expectedFailure, shaapiResponse);
@@ -26,7 +27,7 @@ class ShaapiResponseTest {
   @Test
   void testDeserializeFailure() throws JsonProcessingException {
     //GIVEN
-    ShaapiResponse source = getShaapiResponseAsObject();
+    ShaapiResponse<List<Failure>> source = getShaapiResponseAsObject();
     String expected = getSnaapiResponseAsJson();
 
     //WHEN
@@ -36,7 +37,7 @@ class ShaapiResponseTest {
     assertThatJson(shaapiResponse).isEqualTo(expected);
   }
 
-  public ShaapiResponse getShaapiResponseAsObject() {
+  public ShaapiResponse<List<Failure>> getShaapiResponseAsObject() {
     ProductIdentifier productIdentifier1 = ProductIdentifier.builder()
         .id("B07PY8L6C6")
         .country("US")
@@ -54,7 +55,7 @@ class ShaapiResponseTest {
 
     Failure failure1 = new Failure(406, productIdentifier1, messages1);
     Failure failure2 = new Failure(422, productIdentifier2, messages2);
-    return new ShaapiResponse("Partial success: Some records failed validation.", List.of(failure1, failure2));
+    return new ShaapiResponse<>("Partial success: Some records failed validation.", List.of(failure1, failure2));
   }
 
   public String getSnaapiResponseAsJson() {

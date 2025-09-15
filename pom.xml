@@ -8,7 +8,7 @@
     <groupId>com.admarketplace</groupId>
     <artifactId>amp-shaapi-data-model</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     
     <name>amp-shaapi-data-model</name>
     <description>Data Model to Support the Shopping Ads Asset Service API (SHAAPI) at adMarketplace</description>

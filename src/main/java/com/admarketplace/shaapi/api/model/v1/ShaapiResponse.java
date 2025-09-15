@@ -1,16 +1,10 @@
 package com.admarketplace.shaapi.api.model.v1;
 
-import java.util.List;
-
 /**
- * Represents a response from the SHA API.
- * Contains a message and a list of failure details, which provide additional information about the response.
+ * Generic wrapper returned by all SHAAPI endpoints.
  *
- * @param message A  message that provides information about the response.
- * @param results A list of {@link Failure} objects that provide detailed information about any failures or issues.
+ * @param message human-readable description supplied by backend
+ * @param results payload specific to the invoked endpoint
+ * @param <T>     type of the {@code results} payload
  */
-public record ShaapiResponse(
-    String message,
-    List<Failure> results
-) {
-}
+public record ShaapiResponse<T>(String message, T results) {}
